@@ -1,0 +1,25 @@
+#include <PRIZM.h>
+PRIZM prizm;
+
+void setup() {
+  prizm.PrizmBegin();
+  Serial.begin(9600);
+}
+
+void loop() {
+Serial.println(prizm.readSonicSensorCM(4));
+if(prizm.readSonicSensorCM(4)<15){
+    Wave();
+} else {
+    prizm.setMotorPower(1,100);
+    delay(200);
+  }
+}
+void Wave(){
+  prizm.setMotorSpeed(1,0);
+    prizm.setServoSpeed(1,50);
+    prizm.setServoPosition(1,90);
+    delay(500);
+    prizm.setServoPosition(1,0);
+    delay(500);
+}
