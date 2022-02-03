@@ -1,0 +1,9 @@
+#inclued <PRISM.h>
+PRIZM prism;
+
+void setup() {
+  prizm.PrizmBegin();
+}
+
+void loop() {
+}
