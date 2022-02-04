@@ -4,22 +4,45 @@ PRIZM prizm;
 void setup() {
   prizm.PrizmBegin();
   Serial.begin(9600);
+  prizm.setServoSpeed(1,70);
 }
 
 void loop() {
 Serial.println(prizm.readSonicSensorCM(4));
 if(prizm.readSonicSensorCM(4)<15){
     Wave();
+    Red();
 } else {
-    prizm.setMotorPower(1,100);
-    delay(200);
+    Motor();
+    Green();
   }
 }
 void Wave(){
-  prizm.setMotorSpeed(1,0);
-    prizm.setServoSpeed(1,50);
+    prizm.setMotorSpeed(1,0);
     prizm.setServoPosition(1,90);
     delay(500);
     prizm.setServoPosition(1,0);
     delay(500);
+}
+
+void Motor(){
+    prizm.setMotorPower(1,100);
+    delay(200);
+    
+
+
+}
+
+void Red(){
+  prizm.setRedLED(1);
+  delay(250);
+  prizm.setRedLED(0);
+  delay(250);
+}
+
+
+void Green(){
+  prizm.setGreenLED(1);
+  delay(250);
+  prizm.setGreenLED(0);
 }
