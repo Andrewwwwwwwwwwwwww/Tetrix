@@ -17,6 +17,7 @@ if(prizm.readSonicSensorCM(4)<15){
     Green();
   }
 }
+
 void Wave(){
     prizm.setMotorSpeed(1,0);
     prizm.setServoPosition(1,90);
@@ -28,9 +29,6 @@ void Wave(){
 void Motor(){
     prizm.setMotorPower(1,100);
     delay(200);
-    
-
-
 }
 
 void Red(){
@@ -39,7 +37,6 @@ void Red(){
   prizm.setRedLED(0);
   delay(250);
 }
-
 
 void Green(){
   prizm.setGreenLED(1);
