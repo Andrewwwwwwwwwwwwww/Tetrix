@@ -1,4 +1,4 @@
-#inclued <PRISM.h>
+#inclued <PRIZM.h>
 PRIZM prism;
 
 void setup() {
