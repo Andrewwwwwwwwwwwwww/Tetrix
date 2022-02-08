@@ -1,0 +1,26 @@
+#include <PRIZM.h>
+PRIZM prizm;
+
+int motorSpeed=100;
+
+void setup(){
+  prizm.PrizmBegin();
+  prizm.setMotorInvert(2,1);
+}
+
+void loop(){
+  //forward();
+  right();
+ o
+}
+ 
+
+void forward(){
+   prizm.setMotorPowers(motorSpeed,motorSpeed); //+ for M1 and - for M2 is forward
+   delay(200);
+}
+
+void right(){
+  prizm.setMotorPowers(motorSpeed,-100);
+  delay(500);
+}
