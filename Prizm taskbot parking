@@ -1,0 +1,65 @@
+#include <PRIZM.h>
+PRIZM prizm;
+
+int motorSpeed=25;
+
+void setup(){
+  prizm.PrizmBegin();
+  prizm.setMotorInvert(2,1);
+  Serial.begin(9600);
+}
+
+void loop(){
+  forward();
+  delay(1500);
+  right(); 
+  delay(1000);
+  forward();
+  delay(150);  
+  left();
+  delay(900); 
+  forward(); 
+  delay(350); 
+  stopp(); 
+  prizm.PrizmEnd();
+
+}
+
+   //forward();delay(1500);right(); delay(1000);  left();  delay(1000);  forward();  delay(350);  stopp();  delay(10000); Serial.println(prizm.readEncoderDegrees(2));
+
+void forward(){
+   prizm.setMotorPowers(motorSpeed,motorSpeed);
+}
+
+void right(){
+  prizm.setMotorPowers(motorSpeed*1.1,motorSpeed/3);
+}
+
+void left(){
+  prizm.setMotorPowers(motorSpeed/3,motorSpeed*1.1);
+}
+
+void backward(){
+  prizm.setMotorPowers(motorSpeed/-1,motorSpeed/-1);
+  delay(200);
+}
+
+void stopp(){
+  prizm.setMotorPowers(0,0);
+}
+
+void oldcode(){
+    prizm.setMotorSpeeds(200,200); //
+  delay(1880);
+  prizm.setMotorSpeeds(200,0);
+  delay(1000);
+  prizm.setMotorSpeed(200,200);
+  delay(100);
+  prizm.setMotorSpeeds(200,200);
+  delay(300);
+  prizm.setMotorSpeeds(0,200);
+  delay(900); 
+  prizm.setMotorSpeeds(200,200);
+  delay(300);
+  prizm.PrizmEnd();
+}
