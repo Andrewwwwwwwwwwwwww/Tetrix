@@ -10,22 +10,9 @@ void setup(){
 }
 
 void loop(){
-  forward();
-  delay(1500);
-  right(); 
-  delay(1000);
-  forward();
-  delay(150);  
-  left();
-  delay(900); 
-  forward(); 
-  delay(350); 
-  stopp(); 
-  prizm.PrizmEnd();
-
+  nn();
 }
 
-   //forward();delay(1500);right(); delay(1000);  left();  delay(1000);  forward();  delay(350);  stopp();  delay(10000); Serial.println(prizm.readEncoderDegrees(2));
 
 void forward(){
    prizm.setMotorPowers(motorSpeed,motorSpeed);
@@ -48,17 +35,17 @@ void stopp(){
   prizm.setMotorPowers(0,0);
 }
 
-void oldcode(){
-    prizm.setMotorSpeeds(200,200); //
+void nn(){
+    prizm.setMotorSpeeds(200,196);
   delay(1880);
   prizm.setMotorSpeeds(200,0);
   delay(1000);
-  prizm.setMotorSpeed(200,200);
-  delay(100);
+  prizm.setMotorSpeeds(0,0);
+  delay(500);
   prizm.setMotorSpeeds(200,200);
-  delay(300);
+  delay(200);
   prizm.setMotorSpeeds(0,200);
-  delay(900); 
+  delay(1000); 
   prizm.setMotorSpeeds(200,200);
   delay(300);
   prizm.PrizmEnd();
