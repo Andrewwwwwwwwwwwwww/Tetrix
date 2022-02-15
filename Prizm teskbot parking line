@@ -13,13 +13,15 @@ int motorSpeed=25;
 
 void loop(){
    a();
-  for(int i=0; i<1000; i++){
+  for(int i=0; i<10000 ; i++){
     while(andy.readLineSensor(2)==0){
       andy.setMotorSpeeds(200,200);
       delay(5);
     }
     while(andy.readLineSensor(2)==1){
-      andy.setMotorPowers(125,125);
+      andy.setMotorPowers(-100,-100);
+      delay(50);
+      andy.setMotorPowers(0,0);
       andy.PrizmEnd();
     }
   }
@@ -32,4 +34,27 @@ void forward(){
 
 void right(){
   andy.setMotorPowers(motorSpeed*1.1,motorSpeed/3);
+}
+
+
+void backward(){
+  andy.setMotorPowers(motorSpeed/-1,motorSpeed/-1);
+  delay(200);
+}
+
+void stopp(){
+  andy.setMotorPowers(0,0);
+}
+
+void a(){
+  andy.setMotorSpeeds(200,196);
+  delay(1880);
+  andy.setMotorSpeeds(200,0);
+  delay(1000);
+  andy.setMotorSpeeds(0,0);
+  delay(500);
+  andy.setMotorSpeeds(200,200);
+  delay(200);
+  andy.setMotorSpeeds(0,200);
+  delay(1000); 
 }
