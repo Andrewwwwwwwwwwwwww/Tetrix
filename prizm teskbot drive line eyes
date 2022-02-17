@@ -9,28 +9,43 @@ void setup(){
 }
 
 
-int motorSpeed=25;
+int motorSpeed=100;
+bool stopped=false;
 
 void loop(){
-  while(andy.readSonicSensorCM(3)<=25){
-    andy.setMotorPowers(125,125);
-    delay(5);
-  }
-  
-  if ((andy.readSonicSensorCM(3)>25)&&(andy.readLineSensor(2)==0)){
-    andy.setMotorSpeeds(200,200);
+  if (sensorsclear()==true && !stopped) {
+    forward();
     delay(5);
   } else {
-    andy.setMotorSpeeds(125,125);
+    andy.setMotorPowers(125,125);
     delay(1000);
   }
 }
 
 
 void forward(){
-   andy.setMotorPowers(motorSpeed,motorSpeed);
+   andy.setMotorSpeeds(motorSpeed,motorSpeed);
 }
 
+bool sensorsclear(){
+  if ((andy.readSonicSensorCM(3)>25)&&(andy.readLineSensor(2)==0)){
+    return true;
+  } else {
+    if (andy.readLineSensor(2)==1){
+      stopped=true;
+    } else {
+    return false;
+    }
+  }
+}
+
+bool linedetect(){
+  if (andy.readLineSensor(2)==1){
+    return true;
+  } else {
+    return false;
+  }
+}
 void right(){
   andy.setMotorPowers(motorSpeed*1.1,motorSpeed/3);
 }
