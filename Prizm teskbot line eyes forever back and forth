@@ -1,0 +1,96 @@
+#include <PRIZM.h>
+PRIZM andy;
+
+
+void setup(){
+  andy.PrizmBegin();
+  andy.setMotorInvert(2,1);
+  Serial.begin(9600);
+}
+
+
+int motorSpeed=150;
+bool stopped=false;
+
+void loop(){
+    if (handDetect()==true){
+    stopp();
+    delay(1000);
+  } else {
+    if (lineDetect()==true){
+      andy.setMotorSpeeds(-100,-100);
+      delay(800);
+      stopp();
+      delay(100);
+      turn();
+    } else {
+      forward();
+    }
+  }
+}
+
+
+void stopp(){
+  andy.setMotorPowers(125,125);
+}
+
+void turn(){
+  andy.setMotorSpeeds(motorSpeed,-motorSpeed);
+  delay(1200);
+}
+
+void forward(){
+   andy.setMotorSpeeds(motorSpeed,motorSpeed);
+}
+
+bool sensorsClear(){
+  if ((andy.readSonicSensorCM(3)>25)&&(andy.readLineSensor(2)==0)){
+    return true;
+  } else {
+    if (andy.readLineSensor(2)==1){
+      stopped=true;
+    } else {
+    return false;
+    }
+  }
+}
+
+bool lineDetect(){
+  if (andy.readLineSensor(2)==1){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool handDetect(){
+  if (andy.readSonicSensorCM(3)<25){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void right(){
+  andy.setMotorPowers(motorSpeed*1.1,motorSpeed/3);
+}
+
+
+void backward(){
+  andy.setMotorPowers(motorSpeed/-1,motorSpeed/-1);
+  delay(200);
+}
+
+
+void a(){
+  andy.setMotorSpeeds(200,196);
+  delay(1880);
+  andy.setMotorSpeeds(200,0);
+  delay(1000);
+  andy.setMotorSpeeds(0,0);
+  delay(500);
+  andy.setMotorSpeeds(200,200);
+  delay(200);
+  andy.setMotorSpeeds(0,200);
+  delay(1000); 
+}
