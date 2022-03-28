@@ -1,0 +1,18 @@
+#include <PRIZM.h>    // include the PRIZM library in the sketch
+PRIZM prizm;          // instantiate a PRIZM object “prizm” so we can use its functions
+
+void setup() {
+
+  prizm.PrizmBegin();         // initialize the PRIZM controller
+  prizm.setServoSpeed(1,25);  // set servo 1 speed to 25%
+
+}
+
+void loop() {     // repeat in a loop
+
+  prizm.setServoPosition(2,90); //90 = fully closed
+  delay(3000);
+  prizm.setServoPosition(2,152); //152 = fully open, 90 == min 152 == max
+  delay(3000);
+  
+}
