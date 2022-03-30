@@ -5,13 +5,13 @@ PRIZM prizm;
 PS4 ps4;        
   
 
+#define hSens 0.4 //Horizontal Sensitivity: can be set 0-1, 0 will not be able to change the direction at all
 int ms = 40; 
-
-float speed1 = 0.15;
-float speed2 = 0.3;
-float speed3 = 0.5;
-float speed4 = 1;
-float currentS = speed2;
+float speed1 = 0.15; //speed 1
+float speed2 = 0.3; //speed 2
+float speed3 = 0.5; //speed 3
+float speed4 = 1; //speed 4
+float currentS = speed2; //default = speed 2
 int shift = speed2;
 
 void setup() {
@@ -33,17 +33,19 @@ void loop(){
 
 void BaseMove(){
     if(ps4.Button(UP)==1){
-      prizm.setMotorSpeeds(720,720);delay(200);
+      prizm.setMotorSpeeds(720,720);delay(100);
   } else {
     
     int motor1 = ps4.Motor(LY);
     int motor2 = ps4.Motor(LY); // RY -> LY
     int direction = ps4.Motor(RX); //
-    if (direction > 0){
-    prizm.setMotorPowers(motor1*currentS,(motor2-(-direction)); //added the direction part
-    } else {
-    if (direction < 0){
-    prizm.setMotorPowers((motor1-direction)*currentS,motor2*currentS); //added the direction part
+    if ((motor1 || motor2) != 0){ //
+      if (direction > 0){
+      prizm.setMotorPowers(motor1*currentS,(motor2-(-direction*hSens)); //added the direction & Sens 
+      } else {
+      if (direction < 0){
+      prizm.setMotorPowers((motor1-direction*hSens)*currentS,motor2*currentS); //added the direction & Sens
+      }
     }
     }
   } 
@@ -53,12 +55,12 @@ void BaseMove(){
   }
   if(ps4.Button(R1)==1){
     prizm.resetEncoders();
-    prizm.setMotorDegrees(360,70,360,-70);delay(1200);
+    prizm.setMotorDegrees(360,70,360,-70);delay(1200); //same as above
   }
 }
 
 void Shifter(){
-  if(ps4.Button(RIGHT)== 1 && shift < 4){
+  if(ps4.Button(RIGHT)== 1 && shift < 4){      
     shift++;
     delay(300);
   }
@@ -69,7 +71,7 @@ void Shifter(){
   switch(shift){
     case 1:
       currentS = speed1;
-      ps4.setLED(BLUE);
+      ps4.setLED(BLUE); 
       break;
     case 2:
       currentS = speed2;
