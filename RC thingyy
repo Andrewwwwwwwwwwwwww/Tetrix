@@ -37,9 +37,15 @@ void BaseMove(){
   } else {
     
     int motor1 = ps4.Motor(LY);
-    int motor2 = ps4.Motor(RY);
-    
-    prizm.setMotorPowers(motor1*currentS,motor2*currentS);
+    int motor2 = ps4.Motor(LY); // RY -> LY
+    int direction = ps4.Motor(RX); //
+    if (direction > 0){
+    prizm.setMotorPowers(motor1*currentS,(motor2-(-direction)); //added the direction part
+    } else {
+    if (direction < 0){
+    prizm.setMotorPowers((motor1-direction)*currentS,motor2*currentS); //added the direction part
+    }
+    }
   } 
   if(ps4.Button(L1)==1){
     prizm.resetEncoders();
