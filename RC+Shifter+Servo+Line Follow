@@ -31,11 +31,11 @@ void setup() {
 void loop(){    
   ps4.getPS4();
   if (ps4.Connected){
+    FollowStateOdd();
     if (ps4.Button(CIRCLE)){
       followState++;
    }
     if (lineFollow){
-        
        if (prizm.readLineSensor(3) == 1){
             prizm.setMotorPowers(125,30);
      } else {
@@ -63,7 +63,7 @@ void loop(){
   }
 }
 
-bool followStateOdd(){
+bool FollowStateOdd(){
   if ((followState % 2)==!0){ //if followState is an odd number //not sure about the math, it can also be (follStat%2)==1
     lineFollow = true;
   } else { //if the button was pressed an even number of times, the remain should be 0 when divided by 2, and since it started even, it is off 
