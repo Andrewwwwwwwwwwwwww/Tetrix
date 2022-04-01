@@ -1,0 +1,129 @@
+#include <PRIZM.h>    // include the PRIZM library in the sketch
+#include <TELEOP.h>
+PRIZM prizm;          // instantiate a PRIZM object “prizm” so we can use its functions
+PS4 ps4;
+
+float detDis = 2.5;
+int servoPos = 120;
+int ms = 40; 
+float speed1 = 0.15;
+float speed2 = 0.3;
+float speed3 = 0.5;
+float speed4 = 1;
+float currentS = speed2;
+int shift = speed2;
+int followState = 2; //if the line follow is on or not
+bool lineFollow = false;
+
+#define minD 90 //min agle for the claw
+#define maxD 150 //max angle for the claw
+#define Speed 0.15
+
+void setup() {
+
+  prizm.PrizmBegin();         // initialize the PRIZM controller
+  prizm.setServoSpeed(1,75);  // set servo 1 speed to 75%
+  Serial.begin(9600);
+  prizm.setServoPosition(2,servoPos);
+  prizm.setMotorInvert(2,1);            
+}
+
+void loop(){    
+  ps4.getPS4();
+  if (ps4.Connected){
+    if (ps4.Button(CIRCLE)){
+      followState++;
+   }
+    if (lineFollow){
+        
+       if (prizm.readLineSensor(3) == 1){
+            prizm.setMotorPowers(125,30);
+     } else {
+            prizm.setMotorPowers(30,125);
+       }
+     } else { //when not line following
+              
+        BaseMove();
+        Shifter();
+        if ((ps4.Button(L1))&&(servoPos > minD)){
+           Serial.print("L1");
+           servoPos -= 10;
+           prizm.setServoPosition(2,servoPos);delay(100);
+         } else {
+
+          if ((ps4.Button(R1))&&(servoPos < maxD)){
+           Serial.print("R1");
+           servoPos += 10;
+           prizm.setServoPosition(2,servoPos);delay(100);
+         }
+         }
+       }
+  } else {
+    prizm.PrizmEnd();
+  }
+}
+
+bool followStateOdd(){
+  if ((followState % 2)==!0){ //if followState is an odd number //not sure about the math, it can also be (follStat%2)==1
+    lineFollow = true;
+  } else { //if the button was pressed an even number of times, the remain should be 0 when divided by 2, and since it started even, it is off 
+    lineFollow = false;
+  }
+}
+
+bool line(){
+  if (prizm.readLineSensor(3)==1){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void BaseMove(){
+    if(ps4.Button(UP)==1){
+      prizm.setMotorSpeeds(720,720);delay(200);
+  } else {
+    
+    int motor1 = ps4.Motor(LY);
+    int motor2 = ps4.Motor(RY);
+    
+    prizm.setMotorPowers(motor1*currentS,motor2*currentS);
+  } 
+  if(ps4.Button(L2)==1){
+    prizm.resetEncoders();
+    prizm.setMotorDegrees(360,-70,360,70);delay(1200); //70 degrees used for 90 turn cuz my motors are too fast
+  }
+  if(ps4.Button(R2)==1){
+    prizm.resetEncoders();
+    prizm.setMotorDegrees(360,70,360,-70);delay(1200);
+  }
+}
+
+void Shifter(){
+  if(ps4.Button(RIGHT)== 1 && shift < 4){
+    shift++;
+    delay(300);
+  }
+  if(ps4.Button(LEFT)== 1 && shift > 1){
+    shift--;
+    delay(300);
+  }
+  switch(shift){
+    case 1:
+      currentS = speed1;
+      ps4.setLED(BLUE);
+      break;
+    case 2:
+      currentS = speed2;
+      ps4.setLED(GREEN);
+      break;
+     case 3:
+      currentS = speed3;
+      ps4.setLED(YELLOW);
+      break;
+     case 4:
+      currentS = speed4;
+      ps4.setLED(RED);
+      break;
+  }
+}
