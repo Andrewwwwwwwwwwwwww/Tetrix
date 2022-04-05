@@ -33,7 +33,7 @@ void loop(){
   if (ps4.Connected){
     FollowStateOdd();
     if (ps4.Button(CIRCLE)){
-      followState++;
+      followState++;delay(250);
    }
     if (lineFollow){
        if (prizm.readLineSensor(3) == 1){
@@ -71,17 +71,9 @@ bool FollowStateOdd(){
   }
 }
 
-bool line(){
-  if (prizm.readLineSensor(3)==1){
-    return true;
-  } else {
-    return false;
-  }
-}
-
 void BaseMove(){
     if(ps4.Button(UP)==1){
-      prizm.setMotorSpeeds(720,720);delay(200);
+      prizm.setMotorSpeeds(720,720);delay(100);
   } else {
     
     int motor1 = ps4.Motor(LY);
@@ -91,11 +83,11 @@ void BaseMove(){
   } 
   if(ps4.Button(L2)==1){
     prizm.resetEncoders();
-    prizm.setMotorDegrees(360,-70,360,70);delay(1200); //70 degrees used for 90 turn cuz my motors are too fast
+    prizm.setMotorDegrees(360,-70,360,70);delay(1200); //70 degrees used for 90 turn cuz my motors are too fast //either the speed or the degree will need adjustment, turns too much
   }
   if(ps4.Button(R2)==1){
     prizm.resetEncoders();
-    prizm.setMotorDegrees(360,70,360,-70);delay(1200);
+    prizm.setMotorDegrees(360,70,360,-70);delay(1200); 
   }
 }
 
