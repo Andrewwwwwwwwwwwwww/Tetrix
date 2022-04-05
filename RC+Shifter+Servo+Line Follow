@@ -14,6 +14,7 @@ float currentS = speed2;
 int shift = speed2;
 int followState = 2; //if the line follow is on or not
 bool lineFollow = false;
+bool bottleDetect = false;
 
 #define minD 90 //min agle for the claw
 #define maxD 150 //max angle for the claw
@@ -33,13 +34,29 @@ void loop(){
   if (ps4.Connected){
     FollowStateOdd();
     if (ps4.Button(CIRCLE)){
-      followState++;delay(250);
+      followState++;
+      delay(100);
    }
     if (lineFollow){
-       if (prizm.readLineSensor(3) == 1){
-            prizm.setMotorPowers(125,30);
-     } else {
-            prizm.setMotorPowers(30,125);
+      Scan();
+       if (bottleDetect){
+        prizm.setServoPosition(2,85);
+        prizm.resetEncoders();
+        prizm.setMotorDegrees(180,70,180,-70);delay(1200);
+        prizm.setMotorSpeeds(100,100);
+        delay(400);
+        prizm.setMotorSpeeds(0,0);
+        prizm.setServoPosition(2,130);
+        prizm.setMotorSpeeds(-100,-100);
+        delay(400);
+        prizm.resetEncoders();
+        prizm.setMotorDegrees(180,-70,180,70);delay(1200);
+       } else {
+         if (prizm.readLineSensor(3) == 1){
+              prizm.setMotorPowers(125,15);
+       } else {
+              prizm.setMotorPowers(15,125);
+         }
        }
      } else { //when not line following
               
@@ -71,9 +88,17 @@ bool FollowStateOdd(){
   }
 }
 
+bool line(){
+  if (prizm.readLineSensor(3)==1){
+    return true;
+  } else {
+    return false;
+  }
+}
+
 void BaseMove(){
     if(ps4.Button(UP)==1){
-      prizm.setMotorSpeeds(720,720);delay(100);
+      prizm.setMotorSpeeds(720,720);delay(200);
   } else {
     
     int motor1 = ps4.Motor(LY);
@@ -83,11 +108,11 @@ void BaseMove(){
   } 
   if(ps4.Button(L2)==1){
     prizm.resetEncoders();
-    prizm.setMotorDegrees(360,-70,360,70);delay(1200); //70 degrees used for 90 turn cuz my motors are too fast //either the speed or the degree will need adjustment, turns too much
+    prizm.setMotorDegrees(360,-70,360,70);delay(1200); //70 degrees used for 90 turn cuz my motors are too fast
   }
   if(ps4.Button(R2)==1){
     prizm.resetEncoders();
-    prizm.setMotorDegrees(360,70,360,-70);delay(1200); 
+    prizm.setMotorDegrees(360,70,360,-70);delay(1200);
   }
 }
 
@@ -118,4 +143,20 @@ void Shifter(){
       ps4.setLED(RED);
       break;
   }
+}
+
+bool Scan(){
+  if (prizm.readSonicSensorCM(2)<3){
+    bottleDetect = true;
+  } else {
+    bottleDetect = false;
+  }
+}
+
+void FollowLine(){
+  if (prizm.readLineSensor(3) == 1){
+      prizm.setMotorPowers(125,30);
+   } else {
+      prizm.setMotorPowers(30,125);
+     }
 }
