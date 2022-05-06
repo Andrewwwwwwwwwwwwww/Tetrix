@@ -1,5 +1,5 @@
 #inclued <PRIZM.h>
-PRIZM prism;
+PRIZM prizm;
 
 void setup() {
   prizm.PrizmBegin();
